@@ -1,0 +1,80 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Airflow logs and local db
+logs/
+airflow.cfg
+airflow.db
+webserver_config.py
+standalone_admin_password.txt
+
+# Data directory (downloaded TSVs and generated SQLite / dumps)
+data/*
+!data/.gitkeep
+!data/README.md
+
+# dbt target and logs
+dbt_imdb/target/
+dbt_imdb/dbt_packages/
+dbt_imdb/logs/
+*.log
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo

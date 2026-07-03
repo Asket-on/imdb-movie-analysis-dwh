@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: mart_genre_analytics
+    description: "Analytical data mart aggregating IMDb ratings, votes, and runtimes by genre and decade."
+    columns:
+      - name: genre
+        description: "Individual film genre (e.g., Drama, Action, Sci-Fi)."
+        tests:
+          - not_null
+      - name: decade
+        description: "Decade bucket (e.g., 1990, 2000, 2010)."
+        tests:
+          - not_null
+      - name: total_movies
+        description: "Count of distinct movies within the genre and decade."
+      - name: weighted_avg_rating
+        description: "Average IMDb user rating weighted by number of votes."
+
+  - name: mart_director_success
+    description: "Analytical data mart profiling career success, vote volume, and hit ratios of directors."
+    columns:
+      - name: director_id
+        description: "Unique IMDb name identifier (nm*)."
+        tests:
+          - unique
+          - not_null
+      - name: total_directed_movies
+        description: "Number of qualifying films directed."
+      - name: hit_ratio_percent
+        description: "Percentage of films directed that achieved an average rating >= 7.5."
+
+  - name: mart_yearly_cinema_evolution
+    description: "Macro analytical trend of cinema releases, ratings, and runtime evolution over time."
+    columns:
+      - name: release_year
+        description: "Year of release."
+        tests:
+          - not_null
+      - name: title_type
+        description: "Production format type (movie, tvSeries, documentary)."
+        tests:
+          - not_null
+      - name: total_releases
+        description: "Total count of titles released in that year."

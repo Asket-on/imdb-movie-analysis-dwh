@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: stg_imdb__titles
+    description: "Staging model for IMDb title basics with type cleaning and array extraction."
+    columns:
+      - name: movie_id
+        description: "Primary key IMDb identifier (e.g. tt0000001)."
+        tests:
+          - unique
+          - not_null
+      - name: title_type
+        description: "Type of production (movie, tvSeries, short, etc.)."
+      - name: primary_title
+        description: "Main localized title."
+      - name: release_year
+        description: "Year of premiere or theatrical release."
+
+  - name: stg_imdb__ratings
+    description: "Staging model for IMDb ratings and vote counts."
+    columns:
+      - name: movie_id
+        description: "Foreign key referencing titles."
+        tests:
+          - unique
+          - not_null
+      - name: average_rating
+        description: "Weighted average IMDb user rating (0.0 to 10.0)."
+      - name: num_votes
+        description: "Total number of registered user votes."
+
+  - name: stg_imdb__crew
+    description: "Staging model for IMDb directors and writers mappings."
+    columns:
+      - name: movie_id
+        description: "Foreign key referencing titles."
+        tests:
+          - unique
+          - not_null
+      - name: directors_string
+        description: "Comma-separated string of director name identifiers (nm*)."

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imdb_movie_analysis"
+version = "0.1.0"
+description = "End-to-End IMDb Movie Analysis Data Warehouse Pipeline (PostgreSQL, Airflow, dbt)"
+readme = "README.md"
+authors = [
+    {name = "Mikhail Volobuev", email = "asket-on@github.com"}
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0.0",
+    "requests>=2.31.0",
+    "sqlalchemy>=2.0.0",
+    "psycopg2-binary>=2.9.9",
+    "dbt-postgres>=1.7.0",
+    "apache-airflow>=2.8.0",
+    "rapidfuzz>=3.0.0",
+    "tqdm>=4.66.0",
+    "python-dotenv>=1.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "isort>=5.12.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

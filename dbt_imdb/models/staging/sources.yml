@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw_imdb
+    schema: raw_imdb
+    tables:
+      - name: title_basics
+        description: "Raw IMDb titles dataset containing type, year, runtime, and genres."
+      - name: title_ratings
+        description: "Raw IMDb ratings dataset containing average rating and vote counts."
+      - name: title_crew
+        description: "Raw IMDb crew dataset containing director and writer ID mappings."

@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: imdb_postgres_dwh
+    environment:
+      POSTGRES_DB: imdb_dwh
+      POSTGRES_USER: imdb_user
+      POSTGRES_PASSWORD: imdb_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U imdb_user -d imdb_dwh"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - imdb_net
+
+  airflow-init:
+    image: apache/airflow:2.8.1-python3.10
+    container_name: imdb_airflow_init
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://imdb_user:imdb_password@postgres/imdb_dwh
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./dbt_imdb:/opt/airflow/dbt_imdb
+      - ./data:/opt/airflow/data
+    command: >
+      bash -c "
+        airflow db migrate &&
+        airflow users create \
+          --username admin \
+          --firstname Admin \
+          --lastname User \
+          --role Admin \
+          --email admin@example.com \
+          --password admin || true
+      "
+    networks:
+      - imdb_net
+
+  airflow:
+    image: apache/airflow:2.8.1-python3.10
+    container_name: imdb_airflow_webserver
+    restart: always
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://imdb_user:imdb_password@postgres/imdb_dwh
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: imdb_dwh
+      POSTGRES_USER: imdb_user
+      POSTGRES_PASSWORD: imdb_password
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./dbt_imdb:/opt/airflow/dbt_imdb
+      - ./data:/opt/airflow/data
+      - ./logs:/opt/airflow/logs
+      - ./requirements.txt:/opt/airflow/requirements.txt
+    ports:
+      - "8080:8080"
+    command: bash -c "pip install --no-cache-dir -r /opt/airflow/requirements.txt && airflow standalone"
+    networks:
+      - imdb_net
+
+volumes:
+  postgres_data:
+
+networks:
+  imdb_net:
+    driver: bridge
