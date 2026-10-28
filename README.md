@@ -3,7 +3,7 @@ updated: 2026-07-03T15:30:00+02:00
 ---
 # IMDb Movie Analysis Data Warehouse Pipeline
 
-An enterprise-grade, locally reproducible Data Engineering pipeline that ingests daily updated movie datasets from official IMDb sources, cleans and loads them into an analytical Data Warehouse (PostgreSQL), models them through multi-layer analytical transformations using **dbt Core** (Staging $\rightarrow$ Intermediate $\rightarrow$ Marts), orchestrates workflow scheduling via **Apache Airflow**, and enforces strict Data Quality gates.
+An automated, locally reproducible Data Engineering pipeline that ingests daily updated movie datasets from official IMDb sources, cleans and loads them into an analytical Data Warehouse (PostgreSQL), models them through multi-layer analytical transformations using **dbt Core** (Staging $\rightarrow$ Intermediate $\rightarrow$ Marts), orchestrates workflow scheduling via **Apache Airflow**, and enforces strict Data Quality gates.
 
 ---
 
